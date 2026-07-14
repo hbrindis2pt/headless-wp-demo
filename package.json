@@ -4,7 +4,8 @@
   "description": "Minimal Headless WordPress + GraphQL + TypeScript demo",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc6 --noEmit"
   },
   "repository": {
     "type": "git",
@@ -20,11 +21,17 @@
   "homepage": "https://github.com/hbrindis2pt/headless-wp-demo#readme",
   "dependencies": {
     "dotenv": "^17.4.2",
+    "express": "^5.2.1",
     "graphql-request": "^7.4.0"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
     "@types/node": "^26.1.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^7.0.2"
+    "tsx": "^4.23.0",
+    "typescript": "npm:@typescript/typescript6@^6.0.2"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "typecheck": "tsc6 --noEmit"
   }
 }
