@@ -1,5 +1,6 @@
 import { GraphQLClient } from "graphql-request";
+import { config } from "../config.js";
 
-export const wp = new GraphQLClient(
-    process.env.WP_ENDPOINT!
+export const wordpressClient = new GraphQLClient(
+  config.wpEndpoint
 );
