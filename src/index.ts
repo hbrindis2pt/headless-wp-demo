@@ -1,13 +1,19 @@
 import "dotenv/config";
 import express from "express";
-import { getPosts } from "./services/posts.js";
+import {
+  getPosts,
+  getPostsByCategory,
+} from "./services/posts.js";
 
 const app = express();
 const PORT = 3000;
 
 app.get("/", async (_request, response) => {
   try {
-    const posts = await getPosts();
+    const [posts, sidebarPosts] = await Promise.all([
+      getPosts(),
+      getPostsByCategory("second-cat", 5),
+    ]);
 
     const postHtml = posts
       .map((post) => {
@@ -45,6 +51,19 @@ app.get("/", async (_request, response) => {
       })
       .join("");
 
+      const sidebarHtml = sidebarPosts
+        .map((post) => {
+          return `
+            <article class="sidebar-post">
+              <h3>
+                <a href="/posts/${post.slug}">
+                  ${post.title}
+                </a>
+              </h3>
+            </article>
+          `;
+        })
+        .join("");
     response.send(`
       <!doctype html>
       <html lang="en">
@@ -58,7 +77,7 @@ app.get("/", async (_request, response) => {
           <style>
             body {
               font-family: Arial, sans-serif;
-              max-width: 900px;
+              max-width: 1100px;
               margin: 0 auto;
               padding: 24px;
             }
@@ -75,14 +94,61 @@ app.get("/", async (_request, response) => {
               height: auto;
               object-fit: cover;
             }
+            .page-layout {
+              display: grid;
+              grid-template-columns: minmax(0, 2fr) minmax(220px, 1fr);
+              gap: 48px;
+              align-items: start;
+            }
+
+            aside {
+              border-left: 1px solid #ccc;
+              padding-left: 24px;
+            }
+
+            .sidebar-post {
+              margin-bottom: 20px;
+              padding-bottom: 16px;
+              border-bottom: 1px solid #ddd;
+            }
+
+            .sidebar-post h3 {
+              margin: 0;
+              font-size: 18px;
+              line-height: 1.3;
+            }
+
+            .sidebar-post a {
+              color: inherit;
+            }
+
+            @media (max-width: 700px) {
+              .page-layout {
+                grid-template-columns: 1fr;
+              }
+
+              aside {
+                border-left: 0;
+                border-top: 1px solid #ccc;
+                padding-left: 0;
+                padding-top: 24px;
+              }
+            }
           </style>
         </head>
 
         <body>
-          <main>
-            <h1>Latest posts</h1>
-            ${postHtml}
-          </main>
+          <div class="page-layout">
+            <main>
+              <h1>Latest posts</h1>
+              ${postHtml}
+            </main>
+
+            <aside>
+              <h2>Category posts</h2>
+              ${sidebarHtml}
+            </aside>
+          </div>
         </body>
       </html>
     `);
