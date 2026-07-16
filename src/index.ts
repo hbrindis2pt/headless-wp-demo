@@ -65,6 +65,7 @@ app.get("/", async (_request, response) => {
                   )}"
                   width="100"
                   loading="lazy"
+                  style="width: 100px;"
                 >
               `
             : "";
