@@ -19,7 +19,7 @@ const POST_CARD_FIELDS = gql`
 
     featuredImage {
       node {
-        sourceUrl
+        sourceUrl(size: MEDIUM)
         altText
       }
     }

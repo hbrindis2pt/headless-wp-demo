@@ -11,39 +11,39 @@ app.get("/", async (_request, response) => {
 
     const postHtml = posts
       .map((post) => {
-      const imageHtml = post.featuredImage
-        ? `
-            <img
-              src="${escapeHtml(
-                post.featuredImage.node.sourceUrl,
-              )}"
-              alt="${escapeHtml(
-                post.featuredImage.node.altText ||
-                  post.title,
-              )}"
-              width="300"
-              loading="lazy"
-            >
-          `
-        : "";
+        const imageHtml = post.featuredImage
+          ? `
+              <img
+                src="${escapeHtml(
+                  post.featuredImage.node.sourceUrl,
+                )}"
+                alt="${escapeHtml(
+                  post.featuredImage.node.altText ||
+                    post.title,
+                )}"
+                width="300"
+                loading="lazy"
+              >
+            `
+          : "";
 
-      return `
-        <article>
-          ${imageHtml}
+        return `
+          <article>
+            ${imageHtml}
 
-          <h2>${post.title}</h2>
+            <h2>${post.title}</h2>
 
-          <p>
-            <a href="/posts/${post.slug}">
-              Read article
-            </a>
-          </p>
+            <p>
+              <a href="/posts/${post.slug}">
+                Read article
+              </a>
+            </p>
 
-          <div>${post.excerpt}</div>
-        </article>
-      `;
-    })
-  .join("");
+            <div>${post.excerpt}</div>
+          </article>
+        `;
+      })
+      .join("");
 
     response.send(`
       <!doctype html>
@@ -55,6 +55,27 @@ app.get("/", async (_request, response) => {
             content="width=device-width, initial-scale=1"
           >
           <title>Headless WordPress Demo</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              max-width: 900px;
+              margin: 0 auto;
+              padding: 24px;
+            }
+
+            article {
+              margin-bottom: 40px;
+              padding-bottom: 32px;
+              border-bottom: 1px solid #ccc;
+            }
+
+            article img {
+              display: block;
+              width: 300px;
+              height: auto;
+              object-fit: cover;
+            }
+          </style>
         </head>
 
         <body>
