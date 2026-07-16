@@ -53,8 +53,24 @@ app.get("/", async (_request, response) => {
 
       const sidebarHtml = sidebarPosts
         .map((post) => {
+          const imageHtml = post.featuredImage
+            ? `
+                <img
+                  src="${escapeHtml(
+                    post.featuredImage.node.sourceUrl,
+                  )}"
+                  alt="${escapeHtml(
+                    post.featuredImage.node.altText ||
+                      post.title,
+                  )}"
+                  width="100"
+                  loading="lazy"
+                >
+              `
+            : "";
           return `
             <article class="sidebar-post">
+              ${imageHtml}
               <h3>
                 <a href="/posts/${post.slug}">
                   ${post.title}
@@ -100,7 +116,7 @@ app.get("/", async (_request, response) => {
               gap: 48px;
               align-items: start;
             }
-
+      
             aside {
               border-left: 1px solid #ccc;
               padding-left: 24px;
