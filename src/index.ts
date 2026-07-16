@@ -10,20 +10,40 @@ app.get("/", async (_request, response) => {
     const posts = await getPosts();
 
     const postHtml = posts
-      .map(
-        (post) => `
-          <article>
-            <h2>${post.title}</h2>
-            <p>
-              <a href="/${post.slug}">
-                Read article
-              </a>
-            </p>
-            <div>${post.excerpt}</div>
-          </article>
-        `,
-      )
-      .join("");
+      .map((post) => {
+      const imageHtml = post.featuredImage
+        ? `
+            <img
+              src="${escapeHtml(
+                post.featuredImage.node.sourceUrl,
+              )}"
+              alt="${escapeHtml(
+                post.featuredImage.node.altText ||
+                  post.title,
+              )}"
+              width="300"
+              loading="lazy"
+            >
+          `
+        : "";
+
+      return `
+        <article>
+          ${imageHtml}
+
+          <h2>${post.title}</h2>
+
+          <p>
+            <a href="/posts/${post.slug}">
+              Read article
+            </a>
+          </p>
+
+          <div>${post.excerpt}</div>
+        </article>
+      `;
+    })
+  .join("");
 
     response.send(`
       <!doctype html>
