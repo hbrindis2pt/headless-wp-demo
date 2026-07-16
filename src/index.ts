@@ -15,7 +15,7 @@ app.get("/", async (_request, response) => {
           <article>
             <h2>${post.title}</h2>
             <p>
-              <a href="/posts/${post.slug}">
+              <a href="/${post.slug}">
                 Read article
               </a>
             </p>

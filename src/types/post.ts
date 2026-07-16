@@ -3,8 +3,31 @@ export interface Post {
   databaseId: number;
   title: string;
   slug: string;
+  uri: string;
   date: string;
   excerpt: string;
+
+  author: {
+    node: {
+      name: string;
+      uri: string;
+    };
+  } | null;
+
+  featuredImage: {
+    node: {
+      sourceUrl: string;
+      altText: string;
+    };
+  } | null;
+
+  categories: {
+    nodes: {
+      name: string;
+      slug: string;
+      uri: string;
+    }[];
+  };
 }
 
 export interface GetPostsResponse {
