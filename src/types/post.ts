@@ -35,3 +35,15 @@ export interface GetPostsResponse {
     nodes: Post[];
   };
 }
+
+export interface GetPaywalledPostsResponse {
+  paywalledPosts: {
+    nodes: Post[];
+  };
+}
+
+export interface GetPremiumPostsResponse {
+  premiumPosts: {
+    nodes: Post[];
+  };
+}
